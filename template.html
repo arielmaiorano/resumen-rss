@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Titulares</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+
+    <header>
+      <nav class="top-nav">
+        <div class="container">
+          <div class="nav-wrapper">
+            <h1 class="header">Titulares</h1>
+            <h6 class="header right" style="margin-top:-55px;">Actualizados al {{ fechahora.strftime('%d/%m/%Y %H:%M:%S') }}</h6>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+
+      <div class="row">
+
+      {% for resumen in resumenes %}
+
+        <div class="col s12 m4">
+
+          <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+              {% if resumen["img_url"] %}
+              <img class="activator" src="{{ resumen["img_url"] }}" />
+              <span class="text-small right">Foto: {{ resumen["foto_por"] }}&nbsp;</span>
+              {% else %}
+              &nbsp;
+              {% endif %}
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">{{ resumen["resumen_txt"] }}<i class="material-icons right">list</i></span>
+              <p>Alta: {{ resumen["resumen_fechahora_alta"].strftime('%d/%m/%Y %H:%M:%S') }}<br />Últ. act.: {{ resumen["resumen_fechahora_modi"].strftime('%d/%m/%Y %H:%M:%S') }}</p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4" style="font-size:13px !important;">{{ resumen["resumen_html"]|safe }}<i class="material-icons right">close</i></span>
+              <!--
+              {% if resumen["resumen_polaridad"] > 0 %}
+              <span class="new badge green" data-badge-caption="positivo">{{ '{0:0.2f}'.format(resumen["resumen_polaridad"] * 100) }} %</span>
+              {% endif%}
+              {% if resumen["resumen_polaridad"] < 0 %}
+              <span class="new badge red" data-badge-caption="negativo">{{ '{0:0.2f}'.format(resumen["resumen_polaridad"] * 100) }} %</span>
+              {% endif%}
+              -->
+              <p><b>Referencias:</b></p>
+              
+              <ul class="collection">
+
+              {% for item in resumen["items"] %}
+
+                <li class="collection-item avatar">
+                  {% if item["item_img_url"] %}
+                  <img src="{{ item["item_img_url"] }}" alt="" class="circle">
+                  {% else %}
+                  <i class="material-icons circle">photo_camera</i>
+                  {% endif %}
+                  <i>{{ item["feed_nombre"] }}</i><br />
+                  <span class="title"><b>{{ item["item_titulo"] }}</b></span>
+                  <p>{{ item["item_descripcion"] }}</p>
+                  <i class="right">{{ item["item_fechahora"].strftime('%d/%m/%Y %H:%M:%S') }}</i>
+                  <hr />
+
+                  {% if item["item_proceso_polaridad"] > 0 %}
+                  <span class="new badge green" data-badge-caption="positivo">{{ '{0:0.2f}'.format(item["item_proceso_polaridad"] * 100) }} %</span>
+                  <br />
+                  {% endif%}
+                  {% if item["item_proceso_polaridad"] < 0 %}
+                  <span class="new badge red" data-badge-caption="negativo">{{ '{0:0.2f}'.format(item["item_proceso_polaridad"] * 100) }} %</span>
+                  <br />
+                  {% endif%}
+
+                  <a href="{{ item["item_link"] }}" class="secondary-content" target="_blank"><i class="material-icons">link</i></a>
+                </li>
+
+              {% endfor %}
+
+              </ul>
+
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+
+      </div>
+
+    </div>
+
+  </body>
+</html>
